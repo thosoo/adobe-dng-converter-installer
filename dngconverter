@@ -1,17 +1,6 @@
-# adobe-dng-converter-installer
-This script installs the Adobe DNG Converter in wine on linux.
-
-## install_adobe_dng_converter.sh
-
-```
-Command Line Options
-
-This script supports the following command line options:
-	-p Specifies the $WINEPREFIX, where Adobe DNG Converter should be installed. Else, the default path $HOME/wine-dng will be used.
-```
-
-## dngconverter
-```
+#!/bin/sh
+if [ $# -eq 0 ]; then
+cat <<ENDOFHELP
 Parameter List
 
 	The parameter list consists of options followed by the names of raw files to convert.
@@ -55,9 +44,19 @@ The Adobe DNG Converter supports the following command line options:
 		When converting multiple files with a single command,
 		output files will use this as a base name and will be numbered
 		sequentially. Ignored when using -x option.
-```
+ENDOFHELP
+    exit 1
+fi
 
-## Literature
+echo dngconverter: $*
 
-1. [https://rawpedia.rawtherapee.com/How_to_convert_raw_formats_to_DNG](https://rawpedia.rawtherapee.com/How_to_convert_raw_formats_to_DNG)
-2. [https://github.com/jarnoh/adobe-dngconverter-docker](https://github.com/jarnoh/adobe-dngconverter-docker)
+# since 10.2 changed exe location
+DNGEXE="c:/Program Files/Adobe/Adobe DNG Converter/Adobe DNG Converter.exe"
+
+if [ "$1" = "-i" ] 
+then
+	wine "$2" /S
+else
+	wine "$DNGEXE" $*
+fi
+
